@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import dbConnect from '@/lib/dbConnect';
-import User from '@/models/User';
+import { User } from '@/models';
 import { forgotPasswordSchema } from '@/lib/validations/auth';
 
 export async function POST(request: Request) {

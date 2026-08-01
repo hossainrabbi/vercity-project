@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Batch from '@/models/Batch';
+import { Batch } from '@/models';
 
 export async function GET() {
   try {

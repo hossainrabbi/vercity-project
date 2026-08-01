@@ -1,12 +1,5 @@
 import mongoose from 'mongoose';
-import User from '../models/User';
-import Batch from '../models/Batch';
-import Subject from '../models/Subject';
-import Department from '../models/Department';
-import Teacher from '../models/Teacher';
-import Student from '../models/Student';
-import StudentAttendance from '../models/StudentAttendance';
-import TeacherAttendance from '../models/TeacherAttendance';
+import { User, Batch, Subject, Department, Teacher, Student, StudentAttendance, TeacherAttendance } from '../models';
 
 // Mock generators
 const FIRST_NAMES = [

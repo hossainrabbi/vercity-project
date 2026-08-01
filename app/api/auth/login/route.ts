@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import User from '@/models/User';
+import { User } from '@/models';
 import { signToken, setAuthCookie } from '@/lib/jwt';
 import { loginSchema } from '@/lib/validations/auth';
 

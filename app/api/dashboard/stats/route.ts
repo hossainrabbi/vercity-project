@@ -1,12 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
-import Student from '@/models/Student';
-import Teacher from '@/models/Teacher';
-import Batch from '@/models/Batch';
-import Subject from '@/models/Subject';
-import Department from '@/models/Department';
-import StudentAttendance from '@/models/StudentAttendance';
-import TeacherAttendance from '@/models/TeacherAttendance';
+import { Student, Teacher, Batch, Subject, Department, StudentAttendance, TeacherAttendance } from '@/models';
 
 export async function GET() {
   try {

@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-
-const MONGODB_URI = process.env.MONGODB_URI;
+import '@/models';
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -23,6 +22,9 @@ if (!cached) {
 const mongooseCache: MongooseCache = cached;
 
 async function dbConnect(): Promise<typeof mongoose> {
+  // Enable Mongoose query debugging to log executed queries to console
+  mongoose.set('debug', true);
+
   if (mongooseCache.conn) {
     return mongooseCache.conn;
   }
@@ -34,23 +36,25 @@ async function dbConnect(): Promise<typeof mongoose> {
 
     mongooseCache.promise = (async () => {
       let conn: typeof mongoose | null = null;
+      // Evaluate MONGODB_URI dynamically inside the connection function
+      const currentUri = process.env.MONGODB_URI;
 
       // 1. Try connecting to the configured MONGODB_URI
-      if (MONGODB_URI) {
+      if (currentUri) {
         try {
-          console.log(`Connecting to MongoDB at: ${MONGODB_URI}`);
-          conn = await mongoose.connect(MONGODB_URI, {
+          console.log(`Connecting to MongoDB at: ${currentUri}`);
+          conn = await mongoose.connect(currentUri, {
             ...opts,
-            serverSelectionTimeoutMS: 3000,
+            serverSelectionTimeoutMS: 5000,
           });
           console.log('MongoDB connected successfully.');
-        } catch (error) {
-          console.warn(`Failed to connect to MONGODB_URI: ${MONGODB_URI}. Falling back to in-memory database...`);
+        } catch (error: any) {
+          console.error(`Failed to connect to MONGODB_URI: ${currentUri}. Error: ${error.message}`);
         }
       }
 
-      // 2. Fallback to MongoMemoryServer in development/test
-      if (!conn && process.env.NODE_ENV !== 'production') {
+      // 2. Fallback to MongoMemoryServer in development/test only if MONGODB_URI is not provided
+      if (!conn && !currentUri && process.env.NODE_ENV !== 'production') {
         try {
           console.log('Starting in-memory MongoDB server...');
           const { MongoMemoryServer } = await import('mongodb-memory-server');
@@ -65,16 +69,37 @@ async function dbConnect(): Promise<typeof mongoose> {
           console.log(`In-memory MongoDB started at: ${uri}`);
           conn = await mongoose.connect(uri, opts);
           console.log('Connected to in-memory MongoDB.');
-        } catch (memError) {
-          console.error('Failed to start in-memory MongoDB:', memError);
+        } catch (memError: any) {
+          console.error('Failed to start in-memory MongoDB:', memError.message);
           throw memError;
         }
       }
 
       if (!conn) {
-        throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+        if (currentUri) {
+          throw new Error(`Failed to connect to configured MONGODB_URI: ${currentUri}`);
+        } else {
+          throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+        }
       }
 
+      // Print temporary debug logging:
+      // connected database name, available collection names, and document counts for each collection.
+      try {
+        const db = conn.connection.db;
+        if (db) {
+          console.log(`[DEBUG] Connected Database Name: ${conn.connection.name}`);
+          const collections = await db.listCollections().toArray();
+          console.log('[DEBUG] --- Available Collections and Document Counts ---');
+          for (const col of collections) {
+            const count = await db.collection(col.name).countDocuments();
+            console.log(`[DEBUG] Collection: "${col.name}" - Documents: ${count}`);
+          }
+          console.log('[DEBUG] ------------------------------------------------');
+        }
+      } catch (err: any) {
+        console.error('[DEBUG] Failed to print DB diagnostics logs:', err.message);
+      }
 
       return conn;
     })();
