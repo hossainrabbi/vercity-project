@@ -1,0 +1,1311 @@
+{
+  "info": {
+    "_postman_id": "c82b1d6f-7981-425f-bb46-a4c86e081def",
+    "name": "Vercity Project School Management API",
+    "description": "Comprehensive API endpoints list for Vercity Project University Management System.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Authentication and Admin registration endpoints",
+      "item": [
+        {
+          "name": "Create Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/create-admin",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "create-admin"
+              ]
+            },
+            "description": "Creates a new administrative user. Password must be 6+ chars. Public endpoint.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Super Admin\",\n  \"email\": \"admin@school.com\",\n  \"password\": \"Admin123\",\n  \"role\": \"super_admin\",\n  \"status\": \"active\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in a user, returning user meta and setting an HTTP-Only session cookie. Public endpoint.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@school.com\",\n  \"password\": \"Admin123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me (Get Profile)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Returns the currently authenticated user's profile metadata. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "Generates a reset token and prints a mock reset link to server console. Public endpoint.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@school.com\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/reset-password?token={{reset_token}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{reset_token}}",
+                  "description": "The token received in the reset email"
+                }
+              ]
+            },
+            "description": "Resets the user's password using the token. Public endpoint.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"NewAdminPassword123\",\n  \"confirmPassword\": \"NewAdminPassword123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Clears the active session cookies. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "description": "System stats and summary dashboards",
+      "item": [
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/dashboard/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "description": "Returns total tallies, trend data, recent signups, and attendance distributions. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Batches",
+      "description": "Academic batches / classes management",
+      "item": [
+        {
+          "name": "List Batches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/batches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "batches"
+              ]
+            },
+            "description": "Lists all academic batches sorted by name and shift. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/batches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "batches"
+              ]
+            },
+            "description": "Creates a new batch (shift must be 'Day' or 'Evening'). Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Batch 7\",\n  \"shift\": \"Day\",\n  \"roomNo\": \"Room 107\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Batch",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/batches?id={{batch_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "batches"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{batch_id}}",
+                  "description": "Batch ID to update"
+                }
+              ]
+            },
+            "description": "Updates an existing batch's information. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Batch 7 Updated\",\n  \"shift\": \"Evening\",\n  \"roomNo\": \"Room 207\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Batch",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/batches?id={{batch_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "batches"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{batch_id}}",
+                  "description": "Batch ID to delete"
+                }
+              ]
+            },
+            "description": "Deletes a batch by ID. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Departments",
+      "description": "University department management",
+      "item": [
+        {
+          "name": "List Departments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/departments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "departments"
+              ]
+            },
+            "description": "Lists all departments sorted by code. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Department",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/departments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "departments"
+              ]
+            },
+            "description": "Creates a new department. Code must be unique. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mechanical Engineering\",\n  \"code\": \"ME\",\n  \"description\": \"Department of Mechanical Engineering\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Department",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/departments?id={{department_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "departments"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{department_id}}",
+                  "description": "Department ID to update"
+                }
+              ]
+            },
+            "description": "Updates department details. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mechanical Engineering Updated\",\n  \"code\": \"ME\",\n  \"description\": \"Updated description of Mechanical Dept\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Department",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/departments?id={{department_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "departments"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{department_id}}",
+                  "description": "Department ID to delete"
+                }
+              ]
+            },
+            "description": "Deletes a department by ID. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subjects",
+      "description": "Academic subject and course management",
+      "item": [
+        {
+          "name": "List Subjects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/subjects",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "subjects"
+              ]
+            },
+            "description": "Lists all subjects populated with batch and teacher details. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Subject",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/subjects",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "subjects"
+              ]
+            },
+            "description": "Creates a new subject, linked to a batch and teacher. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Database Systems\",\n  \"code\": \"CS201\",\n  \"assignedBatch\": \"{{batch_id}}\",\n  \"assignedTeacher\": \"{{teacher_user_id}}\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Subject",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/subjects?id={{subject_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "subjects"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{subject_id}}",
+                  "description": "Subject ID to update"
+                }
+              ]
+            },
+            "description": "Updates an existing subject. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Database Systems Updated\",\n  \"code\": \"CS201\",\n  \"assignedBatch\": \"{{batch_id}}\",\n  \"assignedTeacher\": \"{{teacher_user_id}}\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Subject",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/subjects?id={{subject_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "subjects"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{subject_id}}",
+                  "description": "Subject ID to delete"
+                }
+              ]
+            },
+            "description": "Deletes a subject by ID. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Students",
+      "description": "Student profiles and account management",
+      "item": [
+        {
+          "name": "List Students",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/students",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students"
+              ]
+            },
+            "description": "Lists all students sorted by studentId. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/students",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students"
+              ]
+            },
+            "description": "Creates a student user account and profile. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice Smith\",\n  \"email\": \"alice.smith@school.com\",\n  \"password\": \"StudentPassword123\",\n  \"studentId\": \"STD10001\",\n  \"roll\": 1,\n  \"phone\": \"555-0101\",\n  \"gender\": \"female\",\n  \"dateOfBirth\": \"2008-05-15\",\n  \"batch\": \"{{batch_id}}\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Student",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/students?id={{student_profile_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{student_profile_id}}",
+                  "description": "Student Profile ID to update"
+                }
+              ]
+            },
+            "description": "Updates student profile and linked user account details. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice Smith Updated\",\n  \"email\": \"alice.smith.new@school.com\",\n  \"studentId\": \"STD10001\",\n  \"roll\": 2,\n  \"phone\": \"555-0101\",\n  \"gender\": \"female\",\n  \"dateOfBirth\": \"2008-05-15\",\n  \"batch\": \"{{batch_id}}\",\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Student",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/students?id={{student_profile_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "students"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{student_profile_id}}",
+                  "description": "Student Profile ID to delete"
+                }
+              ]
+            },
+            "description": "Deletes a student profile and their associated user account. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Teachers",
+      "description": "Teacher profiles and account management",
+      "item": [
+        {
+          "name": "List Teachers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/teachers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "teachers"
+              ]
+            },
+            "description": "Lists all teachers sorted by employeeId. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Teacher",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/teachers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "teachers"
+              ]
+            },
+            "description": "Creates a teacher user account and profile. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@school.com\",\n  \"password\": \"TeacherPassword123\",\n  \"employeeId\": \"TCH1001\",\n  \"phone\": \"555-0202\",\n  \"department\": \"{{department_id}}\",\n  \"assignedSubjects\": [\n    \"{{subject_id}}\"\n  ],\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Teacher",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/teachers?id={{teacher_profile_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "teachers"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{teacher_profile_id}}",
+                  "description": "Teacher Profile ID to update"
+                }
+              ]
+            },
+            "description": "Updates teacher profile and linked user account details. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.doe.new@school.com\",\n  \"employeeId\": \"TCH1001\",\n  \"phone\": \"555-0202\",\n  \"department\": \"{{department_id}}\",\n  \"assignedSubjects\": [\n    \"{{subject_id}}\"\n  ],\n  \"status\": \"active\"\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Teacher",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/teachers?id={{teacher_profile_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "teachers"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{teacher_profile_id}}",
+                  "description": "Teacher Profile ID to delete"
+                }
+              ]
+            },
+            "description": "Deletes teacher profile and their associated user account. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "description": "Student and teacher attendance trackers",
+      "item": [
+        {
+          "name": "Get Student Attendance Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/attendance/students",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "attendance",
+                "students"
+              ]
+            },
+            "description": "Lists student attendance logs, sorted descending by date. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Update Student Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/attendance/students",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "attendance",
+                "students"
+              ]
+            },
+            "description": "Creates or updates attendance records in bulk for students. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-08-01\",\n  \"logs\": [\n    {\n      \"studentId\": \"{{student_profile_id}}\",\n      \"batchId\": \"{{batch_id}}\",\n      \"status\": \"Present\"\n    }\n  ]\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Teacher Attendance Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/attendance/teachers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "attendance",
+                "teachers"
+              ]
+            },
+            "description": "Lists teacher attendance logs, sorted descending by date. Requires authorization.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Update Teacher Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "description": "Access token"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/attendance/teachers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "attendance",
+                "teachers"
+              ]
+            },
+            "description": "Creates or updates attendance records in bulk for teachers. Requires authorization.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-08-01\",\n  \"logs\": [\n    {\n      \"teacherId\": \"{{teacher_profile_id}}\",\n      \"status\": \"Present\"\n    }\n  ]\n}"
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
